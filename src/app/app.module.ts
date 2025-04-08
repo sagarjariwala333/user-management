@@ -20,13 +20,15 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatToolbarModule } from '@angular/material/toolbar';
 
 import { MatPaginatorModule } from '@angular/material/paginator';
+import { DeleteComponent } from '../components/delete/delete.component';
+import { MatSortModule } from '@angular/material/sort';
 
 
 
 
 @NgModule({
   declarations: [
-    AppComponent, AddUserComponent, AddUserComponent, ListUsersComponent, PageComponent
+    AppComponent, AddUserComponent, AddUserComponent, ListUsersComponent, PageComponent, DeleteComponent
   ],
   imports: [
     BrowserModule,
@@ -42,7 +44,12 @@ import { MatPaginatorModule } from '@angular/material/paginator';
     MatTableModule,
     MatIconModule,
     MatToolbarModule,
-    MatPaginatorModule
+    MatPaginatorModule,
+    MatDialogModule,
+    MatButtonModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatSortModule
   ],
   providers: [],
   bootstrap: [AppComponent]

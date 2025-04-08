@@ -1,17 +1,19 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { User } from 'src/models/user';
 import { UserService } from 'src/services/user.service';
 import { AddUserComponent } from '../add-user/add-user.component';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
+import { DeleteComponent } from '../delete/delete.component';
+import { MatSort } from '@angular/material/sort';
 
 @Component({
   selector: 'app-list-users',
   templateUrl: './list-users.component.html',
   styleUrls: ['./list-users.component.css']
 })
-export class ListUsersComponent implements OnInit {
+export class ListUsersComponent implements OnInit, AfterViewInit {
 
   dataSource = new MatTableDataSource<User>();
 
@@ -37,8 +39,16 @@ export class ListUsersComponent implements OnInit {
     };
   }
 
+  @ViewChild(MatSort) sort!: MatSort;
+
+
   ngAfterViewInit(): void {
     this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
+    this.sort.active = 'name';
+    this.sort.direction = 'asc';
+    this.sort.disableClear = true;
+
   }
 
   ngOnInit(): void {
@@ -46,8 +56,18 @@ export class ListUsersComponent implements OnInit {
   }
 
   deleteUser(id: number): void {
-    this.userService.deleteUser(id)
-    this.refreshUserList()
+
+    const dialogRef = this.dialog.open(DeleteComponent, {
+      width: '300px',
+      data: { message: `Are you sure you want to delete ?` }
+    });
+  
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.userService.deleteUser(id)
+        this.refreshUserList()
+      }
+    });
   }
 
   openUserForm(user?: User) {
